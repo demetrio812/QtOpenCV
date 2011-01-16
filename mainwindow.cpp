@@ -22,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->cameraWidget->setCascadeName(ui->cascadesCB->currentText());
 
+    ui->cameraWidget->setHsvHueInterval(ui->hsvHueSB->value());
+    ui->cameraWidget->setHsvBrightnessThreshold(ui->hsvBrightnessThresholdSB->value());
+    ui->cameraWidget->setHsvSaturationThreshold(ui->hsvSaturationThresholdSB->value());
+
     cameraTimerId=startTimer(DEFAULT_CAMERA_TIMER_MS);
 }
 

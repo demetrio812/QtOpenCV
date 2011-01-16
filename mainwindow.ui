@@ -263,8 +263,8 @@
   <widget class="QDockWidget" name="dockWidget_2">
    <property name="minimumSize">
     <size>
-     <width>150</width>
-     <height>73</height>
+     <width>198</width>
+     <height>223</height>
     </size>
    </property>
    <property name="floating">
@@ -286,6 +286,69 @@
        <property name="text">
         <string>All the image</string>
        </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="title">
+        <string>Values</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_8">
+        <item>
+         <widget class="QSpinBox" name="hsvHueSB">
+          <property name="prefix">
+           <string>Hue interval: </string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="singleStep">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>43</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="hsvBrightnessThresholdSB">
+          <property name="suffix">
+           <string/>
+          </property>
+          <property name="prefix">
+           <string>Brightness threshold: </string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>56</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="hsvSaturationThresholdSB">
+          <property name="prefix">
+           <string>Saturation threshold: </string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
      <item>
@@ -399,6 +462,9 @@
     <slot>setDetectionEnabled(bool)</slot>
     <slot>setODImageScale(int)</slot>
     <slot>setCascadeName(QString)</slot>
+    <slot>setHsvHueInterval(int)</slot>
+    <slot>setHsvBrightnessThreshold(int)</slot>
+    <slot>setHsvSaturationThreshold(int)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -412,11 +478,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>85</x>
-     <y>395</y>
+     <y>359</y>
     </hint>
     <hint type="destinationlabel">
-     <x>310</x>
-     <y>378</y>
+     <x>650</x>
+     <y>413</y>
     </hint>
    </hints>
   </connection>
@@ -479,8 +545,56 @@
      <y>148</y>
     </hint>
     <hint type="destinationlabel">
-     <x>325</x>
-     <y>196</y>
+     <x>665</x>
+     <y>231</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hsvHueSB</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>cameraWidget</receiver>
+   <slot>setHsvHueInterval(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>169</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>429</x>
+     <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hsvBrightnessThresholdSB</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>cameraWidget</receiver>
+   <slot>setHsvBrightnessThreshold(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>141</x>
+     <y>440</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>411</x>
+     <y>432</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hsvSaturationThresholdSB</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>cameraWidget</receiver>
+   <slot>setHsvSaturationThreshold(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>479</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>485</y>
     </hint>
    </hints>
   </connection>

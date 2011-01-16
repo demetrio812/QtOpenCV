@@ -27,6 +27,10 @@ public:
 public slots:
 
     void setHsvAllImageConvertedEnabled(bool value);
+    void setHsvHueInterval(int value);
+    void setHsvBrightnessThreshold(int value);
+    void setHsvSaturationThreshold(int value);
+
     void setDetectionEnabled(bool value);
 
     void setODImageScale(int value);
@@ -43,6 +47,11 @@ private:
 
     // HSV
     void hsvReduce(IplImage *cvimage);
+    int hsv_hue_interval;
+    int hsv_brightness_threshold;
+    int hsv_saturation_threshold;
+
+    // Kinect
     IplImage *GlViewColor(IplImage *depth);
 
     // Face detection

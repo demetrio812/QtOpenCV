@@ -5,8 +5,8 @@
 #define DEFAULT_CASCADES_PATH "/opt/local/share/opencv/haarcascades/"
 
 QOpenCvImageBox::QOpenCvImageBox(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::QOpenCvImageBox)
+        QWidget(parent),
+        ui(new Ui::QOpenCvImageBox)
 {
     ui->setupUi(this);
 
@@ -16,6 +16,10 @@ QOpenCvImageBox::QOpenCvImageBox(QWidget *parent) :
 
     detectionEnabled=false;
     hsvAllImageConvertedEnabled=false;
+
+    setHsvHueInterval(42);
+    setHsvBrightnessThreshold(50);
+    setHsvSaturationThreshold(20);
 }
 
 QOpenCvImageBox::~QOpenCvImageBox()
@@ -26,8 +30,7 @@ QOpenCvImageBox::~QOpenCvImageBox()
 void QOpenCvImageBox::putImage(IplImage *cvimage) {
     if (isHsvAllImageConvertedEnabled()) {
         // HSV conversion
-        //hsvReduce(cvimage);
-        cvimage=GlViewColor(cvimage);
+        hsvReduce(cvimage);
     }
 
     // Face detection
@@ -45,37 +48,37 @@ void QOpenCvImageBox::putImage(IplImage *cvimage) {
     int cvIndex, cvLineStart;
     // switch between bit depths
     switch (cvimage->depth) {
-        case IPL_DEPTH_8U:
-            switch (cvimage->nChannels) {
-                case 3:
-                    if ( (cvimage->width != image.width()) || (cvimage->height != image.height()) ) {
-                        QImage temp(cvimage->width, cvimage->height, QImage::Format_RGB32);
-                        image = temp;
-                    }
-                    cvIndex = 0; cvLineStart = 0;
-                    for (int y = 0; y < cvimage->height; y++) {
-                        unsigned char red,green,blue;
-                        cvIndex = cvLineStart;
-                        for (int x = 0; x < cvimage->width; x++) {
-                            // DO it
-                            red = cvimage->imageData[cvIndex+2];
-                            green = cvimage->imageData[cvIndex+1];
-                            blue = cvimage->imageData[cvIndex+0];
+    case IPL_DEPTH_8U:
+        switch (cvimage->nChannels) {
+        case 3:
+            if ( (cvimage->width != image.width()) || (cvimage->height != image.height()) ) {
+                QImage temp(cvimage->width, cvimage->height, QImage::Format_RGB32);
+                image = temp;
+            }
+            cvIndex = 0; cvLineStart = 0;
+            for (int y = 0; y < cvimage->height; y++) {
+                unsigned char red,green,blue;
+                cvIndex = cvLineStart;
+                for (int x = 0; x < cvimage->width; x++) {
+                    // DO it
+                    red = cvimage->imageData[cvIndex+2];
+                    green = cvimage->imageData[cvIndex+1];
+                    blue = cvimage->imageData[cvIndex+0];
 
-                            image.setPixel(x,y,qRgb(red, green, blue));
-                            cvIndex += 3;
-                        }
-                        cvLineStart += cvimage->widthStep;
-                    }
-                    break;
-                default:
-                    printf("This number of channels is not supported\n");
-                    break;
+                    image.setPixel(x,y,qRgb(red, green, blue));
+                    cvIndex += 3;
+                }
+                cvLineStart += cvimage->widthStep;
             }
             break;
-        default:
-            printf("This type of IplImage is not implemented in QOpenCVWidget\n");
+                default:
+            printf("This number of channels is not supported\n");
             break;
+        }
+        break;
+        default:
+        printf("This type of IplImage is not implemented in QOpenCVWidget\n");
+        break;
     }
     ui->imageLabel->setPixmap(QPixmap::fromImage(image));
 }
@@ -90,23 +93,30 @@ void QOpenCvImageBox::setHsvAllImageConvertedEnabled(bool value) {
     hsvAllImageConvertedEnabled=value;
 }
 
-#define HUE_INTERVAL 42
+void QOpenCvImageBox::setHsvHueInterval(int value) {
+    hsv_hue_interval=value;
+}
 
-#define CORREZIONE_LUMINOSITA 50
-#define CORREZIONE_SATURAZIONE 20
+void QOpenCvImageBox::setHsvBrightnessThreshold(int value) {
+    hsv_brightness_threshold=value;
+}
+
+void QOpenCvImageBox::setHsvSaturationThreshold(int value) {
+    hsv_saturation_threshold=value;
+}
 
 void QOpenCvImageBox::hsvReduce(IplImage *cvimage) {
-   IplImage *hsvImage = cvCreateImage( cvSize(cvimage->width,cvimage->height), IPL_DEPTH_8U, 3 );
-   cvCvtColor(cvimage,hsvImage,CV_BGR2HSV);
+    IplImage *hsvImage = cvCreateImage( cvSize(cvimage->width,cvimage->height), IPL_DEPTH_8U, 3 );
+    cvCvtColor(cvimage,hsvImage,CV_BGR2HSV);
 
-   int heightc = hsvImage->height;
-   int widthc = hsvImage->width;
-   int stepc=hsvImage->widthStep;
-   int channelsc=hsvImage->nChannels;
+    int heightc = hsvImage->height;
+    int widthc = hsvImage->width;
+    int stepc=hsvImage->widthStep;
+    int channelsc=hsvImage->nChannels;
 
-   uchar *datac = (uchar *)hsvImage->imageData;
+    uchar *datac = (uchar *)hsvImage->imageData;
 
-   for(int i=0;i< (heightc);i++) for(int j=0;j<(widthc);j++) {
+    for(int i=0;i< (heightc);i++) for(int j=0;j<(widthc);j++) {
         int saturation=datac[i*stepc+j*channelsc+1];
         int value=datac[i*stepc+j*channelsc+2];
 
@@ -123,11 +133,11 @@ void QOpenCvImageBox::hsvReduce(IplImage *cvimage) {
 
         //printf("hueFound: %d", hueFound);
 
-        if (value<CORREZIONE_LUMINOSITA) { // Se ci si avvicina al nero lo metto nero
+        if (value<hsv_brightness_threshold) { // Se ci si avvicina al nero lo metto nero
             hue=255;
             saturation=255;
             value=0;
-        } else if (saturation<CORREZIONE_SATURAZIONE) { // se la saturazione Ë vicina allo zero la setto a zero(bianco)
+        } else if (saturation<hsv_saturation_threshold) { // se la saturazione Ë vicina allo zero la setto a zero(bianco)
             hue=0;
             saturation=0;
             value=255;
@@ -135,16 +145,18 @@ void QOpenCvImageBox::hsvReduce(IplImage *cvimage) {
             saturation=255;
             value=255;
 
-            if ((hue>=0 && hue<=50) || (hue>210 && hue<=255)){
-                if (hue>28) {
-                    hue=40;
-                } else {
-                    hue=0;
-                }
-            } else if (hue>=128 && hue<=210) {
-                hue=168;
+            // reducing the hue values (so the colors)
+            double intervalFound=hue/hsv_hue_interval;
+
+            if (intervalFound==0) {
+                hue=0;
             } else {
-                hue=84;
+                // round the intervalFound
+                round(intervalFound);
+
+                int hueFound=255/intervalFound;  // finding the color in the rounded value
+
+                hue=hueFound;
             }
         }
 
@@ -152,60 +164,60 @@ void QOpenCvImageBox::hsvReduce(IplImage *cvimage) {
         datac[i*stepc+j*channelsc]=hue;
         datac[i*stepc+j*channelsc+1]=saturation;
         datac[i*stepc+j*channelsc+2]=value;
-   }
+    }
 
-   cvCvtColor(hsvImage,cvimage,CV_HSV2BGR);
-   cvReleaseImage(&hsvImage);
+    cvCvtColor(hsvImage,cvimage,CV_HSV2BGR);
+    cvReleaseImage(&hsvImage);
 }
 
 IplImage *QOpenCvImageBox::GlViewColor(IplImage *depth)
 {
-        static IplImage *image = 0;
-        if (!image) image = cvCreateImage(cvSize(640,480), 8, 3);
-        unsigned char *depth_mid = (unsigned char *)image->imageData;
-        int i;
-        for (i = 0; i < 640*480; i++) {
-                int lb = ((short *)depth->imageData)[i] % 256;
-                int ub = ((short *)depth->imageData)[i] / 256;
-                switch (ub) {
-                        case 0:
-                                depth_mid[3*i+2] = 255;
-                                depth_mid[3*i+1] = 255-lb;
-                                depth_mid[3*i+0] = 255-lb;
-                                break;
-                        case 1:
-                                depth_mid[3*i+2] = 255;
-                                depth_mid[3*i+1] = lb;
-                                depth_mid[3*i+0] = 0;
-                                break;
-                        case 2:
-                                depth_mid[3*i+2] = 255-lb;
-                                depth_mid[3*i+1] = 255;
-                                depth_mid[3*i+0] = 0;
-                                break;
-                        case 3:
-                                depth_mid[3*i+2] = 0;
-                                depth_mid[3*i+1] = 255;
-                                depth_mid[3*i+0] = lb;
-                                break;
-                        case 4:
-                                depth_mid[3*i+2] = 0;
-                                depth_mid[3*i+1] = 255-lb;
-                                depth_mid[3*i+0] = 255;
-                                break;
-                        case 5:
-                                depth_mid[3*i+2] = 0;
-                                depth_mid[3*i+1] = 0;
-                                depth_mid[3*i+0] = 255-lb;
-                                break;
-                        default:
-                                depth_mid[3*i+2] = 0;
-                                depth_mid[3*i+1] = 0;
-                                depth_mid[3*i+0] = 0;
-                                break;
-                }
+    static IplImage *image = 0;
+    if (!image) image = cvCreateImage(cvSize(640,480), 8, 3);
+    unsigned char *depth_mid = (unsigned char *)image->imageData;
+    int i;
+    for (i = 0; i < 640*480; i++) {
+        int lb = ((short *)depth->imageData)[i] % 256;
+        int ub = ((short *)depth->imageData)[i] / 256;
+        switch (ub) {
+        case 0:
+            depth_mid[3*i+2] = 255;
+            depth_mid[3*i+1] = 255-lb;
+            depth_mid[3*i+0] = 255-lb;
+            break;
+        case 1:
+            depth_mid[3*i+2] = 255;
+            depth_mid[3*i+1] = lb;
+            depth_mid[3*i+0] = 0;
+            break;
+        case 2:
+            depth_mid[3*i+2] = 255-lb;
+            depth_mid[3*i+1] = 255;
+            depth_mid[3*i+0] = 0;
+            break;
+        case 3:
+            depth_mid[3*i+2] = 0;
+            depth_mid[3*i+1] = 255;
+            depth_mid[3*i+0] = lb;
+            break;
+        case 4:
+            depth_mid[3*i+2] = 0;
+            depth_mid[3*i+1] = 255-lb;
+            depth_mid[3*i+0] = 255;
+            break;
+        case 5:
+            depth_mid[3*i+2] = 0;
+            depth_mid[3*i+1] = 0;
+            depth_mid[3*i+0] = 255-lb;
+            break;
+        default:
+            depth_mid[3*i+2] = 0;
+            depth_mid[3*i+1] = 0;
+            depth_mid[3*i+0] = 0;
+            break;
         }
-        return image;
+    }
+    return image;
 }
 
 // Obj detection
@@ -307,7 +319,7 @@ CvRect* QOpenCvImageBox::detect_objs( IplImage* img, CvMemStorage* storage, CvHa
         CvRect* farray=new CvRect[objs_found];
         for( i = 0; i < (faces ? objs_found : 0); i++ )
         {
-           // Create a new rectangle for drawing the face
+            // Create a new rectangle for drawing the face
             CvRect* r = (CvRect*)cvGetSeqElem( faces, i );
 
             farray[i].x=r->x;
@@ -389,7 +401,7 @@ void QOpenCvImageBox::old_detect_and_draw_faces( IplImage* img, CvMemStorage* st
 
         for( i = 0; i < (faces ? faces->total : 0); i++ )
         {
-           // Create a new rectangle for drawing the face
+            // Create a new rectangle for drawing the face
             CvRect* r = (CvRect*)cvGetSeqElem( faces, i );
 
             if(r) {
