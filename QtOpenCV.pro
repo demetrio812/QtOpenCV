@@ -6,7 +6,7 @@ TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += "/opt/local/include"
-LIBS += -L"/opt/local/lib/" -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect
+LIBS += -L"/opt/local/lib/" -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lopencv_video
 
 SOURCES += main.cpp \
     mainwindow.cpp \

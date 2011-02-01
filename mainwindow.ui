@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1071</width>
-    <height>790</height>
+    <height>961</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,8 +46,8 @@
   <widget class="QDockWidget" name="dockWidget">
    <property name="minimumSize">
     <size>
-     <width>326</width>
-     <height>282</height>
+     <width>340</width>
+     <height>449</height>
     </size>
    </property>
    <property name="allowedAreas">
@@ -88,7 +88,7 @@
              <number>1</number>
             </property>
             <property name="value">
-             <number>8</number>
+             <number>10</number>
             </property>
            </widget>
           </item>
@@ -232,11 +232,190 @@
          </layout>
         </item>
         <item>
-         <widget class="QLabel" name="calcTimeLabel">
-          <property name="text">
-           <string>Calc time: 0</string>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Calc time:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="calcTimeLabel">
+            <property name="text">
+             <string>0ms</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="subObjDetectionGB">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="title">
+        <string>Sub detection</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_9">
+        <item>
+         <widget class="QComboBox" name="subObjsCascadesCB">
+          <item>
+           <property name="text">
+            <string>haarcascade_mcs_eyepair_big.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_frontalface_alt2.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_frontalface_default.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_frontalface_alt.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_frontalface_alt_tree.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_eye.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_eye2.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_eye_tree_eyeglasses.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_lefteye_2splits.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_fullbody.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_lowerbody.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_mcs_eyepair_small.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_mcs_lefteye.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_mcs_mouth.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_mcs_nose.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_mcs_righteye.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_mcs_upperbody.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_profileface.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_righteye_2splits.xml</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>haarcascade_upperbody.xml</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="subImageScaleSB">
+          <property name="prefix">
+           <string>Image scale: </string>
+          </property>
+          <property name="value">
+           <number>2</number>
           </property>
          </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Sub objs found:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="subObjsFoundLabel">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Calc time:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="calcTimeSubLabel">
+            <property name="text">
+             <string>0ms</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -465,6 +644,9 @@
     <slot>setHsvHueInterval(int)</slot>
     <slot>setHsvBrightnessThreshold(int)</slot>
     <slot>setHsvSaturationThreshold(int)</slot>
+    <slot>setSubDetectionEnabled(bool)</slot>
+    <slot>setSubObjsCascadeName(QString)</slot>
+    <slot>setSubODImageScale(int)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -478,7 +660,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>85</x>
-     <y>359</y>
+     <y>514</y>
     </hint>
     <hint type="destinationlabel">
      <x>650</x>
@@ -557,8 +739,8 @@
    <slot>setHsvHueInterval(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>169</x>
-     <y>398</y>
+     <x>184</x>
+     <y>569</y>
     </hint>
     <hint type="destinationlabel">
      <x>429</x>
@@ -573,8 +755,8 @@
    <slot>setHsvBrightnessThreshold(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>141</x>
-     <y>440</y>
+     <x>156</x>
+     <y>604</y>
     </hint>
     <hint type="destinationlabel">
      <x>411</x>
@@ -589,12 +771,76 @@
    <slot>setHsvSaturationThreshold(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>240</x>
-     <y>479</y>
+     <x>255</x>
+     <y>639</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
      <y>485</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>subObjDetectionGB</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cameraWidget</receiver>
+   <slot>setSubDetectionEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>62</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>468</x>
+     <y>321</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>subObjsCascadesCB</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>cameraWidget</receiver>
+   <slot>setSubObjsCascadeName(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>118</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>455</x>
+     <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>faceDetectionEnabled</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>subObjDetectionGB</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>61</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>63</x>
+     <y>258</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>subImageScaleSB</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>cameraWidget</receiver>
+   <slot>setSubODImageScale(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>327</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>616</x>
+     <y>462</y>
     </hint>
    </hints>
   </connection>

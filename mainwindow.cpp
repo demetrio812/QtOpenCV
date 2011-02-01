@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     printf("Image nChannels=%i\n", image->nChannels);
 
     ui->cameraWidget->setCascadeName(ui->cascadesCB->currentText());
+    ui->cameraWidget->setSubObjsCascadeName(ui->subObjsCascadesCB->currentText());
 
     ui->cameraWidget->setHsvHueInterval(ui->hsvHueSB->value());
     ui->cameraWidget->setHsvBrightnessThreshold(ui->hsvBrightnessThresholdSB->value());
@@ -42,6 +43,8 @@ void MainWindow::timerEvent(QTimerEvent*) {
     ui->cameraWidget->putImage(image);
     ui->objsFoundLabel->setText(QString::number(ui->cameraWidget->getObjsFound()));
     ui->calcTimeLabel->setText(QString::number(ui->cameraWidget->getODCalcTime()).append(" ms"));
+    ui->subObjsFoundLabel->setText(QString::number(ui->cameraWidget->getSubObjsFound()));
+    ui->calcTimeSubLabel->setText(QString::number(ui->cameraWidget->getSubODCalcTime()).append(" ms"));
     ui->imageSizeInfoLabel->setText(QString("Image size: ").append(QString::number(image->width)).append("x").append(QString::number(image->height)));
 }
 
